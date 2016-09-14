@@ -18,6 +18,7 @@ enum CARegexType: String {
     case Address
     case Name
     case Surname
+    case Notation
 }
 
 protocol CARegex{
@@ -102,6 +103,11 @@ public class RegexAPI:CARegex {
                 result  =   self.validateSurname(data[key]!)
                 resultDic[key]   =   result
                 if !result {globalResult =   false}
+                
+            case CARegexType.Notation.rawValue:
+                result  =   self.validateNotation(data[key]!)
+                resultDic[key]   =   result
+                if !result {globalResult =   false}
 
             default:
                 print("INTERNAL BAD INVALID TYPE - RTFM")
@@ -172,11 +178,21 @@ public class RegexAPI:CARegex {
     }
     
     private func validateName(name:String?)->Bool{
-        return name!.isEmpty ? false:true
+        let pattern = "[a-zA-Z]'?([a-zA-Z]|\\.| |-)+"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
+        return predicate.evaluateWithObject(name)
+        
     }
     
     private func validateSurname(surname:String?)->Bool{
-        return surname!.isEmpty ? false:true
+        let pattern = "[a-zA-Z]'?([a-zA-Z]|\\.| |-)+"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
+        return predicate.evaluateWithObject(surname)
+    }
+    
+    private func validateNotation(notation:String?)->Bool{
+        return notation!.isEmpty ? false:true
+
     }
     
     typealias CompletionHandler = (result:Bool, error:ErrorType?) throws -> Void
