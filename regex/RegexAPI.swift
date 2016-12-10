@@ -8,9 +8,9 @@
 
 import Foundation
 
-enum CARegexCallError: ErrorType {
-    case InvalidType
-    case UnknownError
+enum CARegexCallError: Error {
+    case invalidType
+    case unknownError
 }
 enum CARegexType: String {
     case Phone
@@ -23,31 +23,31 @@ enum CARegexType: String {
 
 protocol CARegex{
 
-    func validate(type:String, value:String) throws ->Bool
+    func validate(_ type:String, value:String) throws ->Bool
 }
 
-public class RegexAPI:CARegex {
+open class RegexAPI:CARegex {
 
-    public var errors:[String:String]
+    open var errors:[String:String]
     
     public init(){
         errors = [String:String]()
     }
     
-    public func validate(type:String, value:String) throws ->Bool {
+    open func validate(_ type:String, value:String) throws ->Bool {
         switch type {
             
         case CARegexType.Phone.rawValue:
             return self.validatePhoneNumber(value)
         default:
             print("INTERNAL RegexAPI : INVALID TYPE - MUST BE Phone")
-            throw CARegexCallError.InvalidType
+            throw CARegexCallError.invalidType
             
         }
 
     }
     
-    private func validate(data:[String:String]) throws ->Bool {
+    fileprivate func validate(_ data:[String:String]) throws ->Bool {
         var result = false
         for key in data.keys{
             switch key {
@@ -64,13 +64,13 @@ public class RegexAPI:CARegex {
                 default:
                     print("INTERNAL BAD INVALID TYPE - RTFM")
                     result = false
-                    throw CARegexCallError.InvalidType                
+                    throw CARegexCallError.invalidType                
             }
         }
         return result
     }
 
-    private func validate(data:[String:String]) throws ->(Bool,[String:Bool]) {
+    fileprivate func validate(_ data:[String:String]) throws ->(Bool,[String:Bool]) {
         var globalResult    = true
         var result          = true
 
@@ -115,13 +115,13 @@ public class RegexAPI:CARegex {
                 resultDic[key]   =   result
                 if !result {globalResult =   false}
 
-                throw CARegexCallError.InvalidType
+                throw CARegexCallError.invalidType
             }
         }
         return (globalResult,resultDic)
     }
     
-    public func validateWithResponse(type:String, value:String) throws -> [String:String]{
+    open func validateWithResponse(_ type:String, value:String) throws -> [String:String]{
         switch type {
             
         case CARegexType.Phone.rawValue:
@@ -129,29 +129,29 @@ public class RegexAPI:CARegex {
             return self.errors
         default:
             print("INTERNAL RegexAPI : INVALID TYPE - MUST BE Phone")
-            throw CARegexCallError.InvalidType
+            throw CARegexCallError.invalidType
         }
 
     }
     
-    private func validatePhoneNumberWithResponse(phoneNumber:String){
+    fileprivate func validatePhoneNumberWithResponse(_ phoneNumber:String){
         // ITU-T E.123
         let pattern = "^\\+(?:[0-9]\\x20?){6,14}[0-9]$"
         let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", pattern)
-        if !predicate.evaluateWithObject(phoneNumber){
+        if !predicate.evaluate(with: phoneNumber){
             self.errors["Phone"] = "Phone format error"
         }
     }
     
     
     
-    private func validatePhoneNumber(phoneNumber:String)->Bool{
+    fileprivate func validatePhoneNumber(_ phoneNumber:String)->Bool{
         
         // ITU-T E.123
         
         let pattern = "^\\+(?:[0-9]\\x20?){6,14}[0-9]$"
         let predicate:NSPredicate = NSPredicate(format: "SELF MATCHES %@", pattern)
-        return predicate.evaluateWithObject(phoneNumber)
+        return predicate.evaluate(with: phoneNumber)
         
         // Extensible Provisioning Protocol (EPP)
         /*
@@ -166,64 +166,64 @@ public class RegexAPI:CARegex {
 */
     }
     
-    private func validateEmail(email:String?)->Bool{
+    fileprivate func validateEmail(_ email:String?)->Bool{
         let pattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
-        return predicate.evaluateWithObject(email)
+        return predicate.evaluate(with: email)
         
     }
     
-    private func validateAddress(address:String?)->Bool{
+    fileprivate func validateAddress(_ address:String?)->Bool{
         return address!.isEmpty ? false:true
     }
     
-    private func validateName(name:String?)->Bool{
+    fileprivate func validateName(_ name:String?)->Bool{
         let pattern = "[a-zA-Z]'?([a-zA-Z]|\\.| |-)+"
         let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
-        return predicate.evaluateWithObject(name)
+        return predicate.evaluate(with: name)
         
     }
     
-    private func validateSurname(surname:String?)->Bool{
+    fileprivate func validateSurname(_ surname:String?)->Bool{
         let pattern = "[a-zA-Z]'?([a-zA-Z]|\\.| |-)+"
         let predicate = NSPredicate(format: "SELF MATCHES %@", pattern)
-        return predicate.evaluateWithObject(surname)
+        return predicate.evaluate(with: surname)
     }
     
-    private func validateNotation(notation:String?)->Bool{
+    fileprivate func validateNotation(_ notation:String?)->Bool{
         return notation!.isEmpty ? false:true
 
     }
     
-    typealias CompletionHandler = (result:Bool, error:ErrorType?) throws -> Void
+    typealias CompletionHandler = (_ result:Bool, _ error:Error?) throws -> Void
 
-    func validateDataWithCompletion(data:[String:String],completionHandler: CompletionHandler) {
+    func validateDataWithCompletion(_ data:[String:String],completionHandler: CompletionHandler) {
         
             do{
-                try completionHandler(result:self.validate(data),error: nil)
-            }catch CARegexCallError.InvalidType{
+                try completionHandler(self.validate(data),nil)
+            }catch CARegexCallError.invalidType{
                 print("completionHandler : TYPE IS INVALID")
-                try! completionHandler(result: false,error: CARegexCallError.InvalidType)
+                try! completionHandler(false,CARegexCallError.invalidType)
             }catch{
                 print("completionHandler : OTHER ERROR")
-                try! completionHandler(result: false,error: CARegexCallError.UnknownError)
+                try! completionHandler(false,CARegexCallError.unknownError)
                 //error = CARegexCallError.UnknownError
             }
     
     }
     
-    public typealias CompletionHandlerForAllData = (result:(Bool,[String:Bool]), error:ErrorType?) throws -> Void
+    public typealias CompletionHandlerForAllData = (_ result:(Bool,[String:Bool]), _ error:Error?) throws -> Void
 
-    public func validateAllDataWithCompletion(data:[String:String],completionHandler: CompletionHandlerForAllData) {
+    open func validateAllDataWithCompletion(_ data:[String:String],completionHandler: CompletionHandlerForAllData) {
         
         do{
-            try completionHandler(result:self.validate(data),error: nil)
-        }catch CARegexCallError.InvalidType{
+            try completionHandler(self.validate(data),nil)
+        }catch CARegexCallError.invalidType{
             print("completionHandler : TYPE IS INVALID")
-            try! completionHandler(result: (false,[:]),error: CARegexCallError.InvalidType)
+            try! completionHandler((false,[:]),CARegexCallError.invalidType)
         }catch{
             print("completionHandler : OTHER ERROR")
-            try! completionHandler(result: (false,[:]),error: CARegexCallError.UnknownError)
+            try! completionHandler((false,[:]),CARegexCallError.unknownError)
             //error = CARegexCallError.UnknownError
         }
         

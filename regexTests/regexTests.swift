@@ -54,7 +54,7 @@ class regexTests: XCTestCase {
                 do{
                     return try  RegexAPI().validate("PHONE", value: "+33623243101")
                 }
-                catch CARegexCallError.InvalidType{
+                catch CARegexCallError.invalidType{
                     print("TYPE IS INVALID")
                 }
                 catch{
@@ -67,16 +67,13 @@ class regexTests: XCTestCase {
     
     func testValidationWithCompletionNominal(){
     
-        let expectation = expectationWithDescription("testValidationWithCompletionNominal")
+        let expectation = self.expectation(description: "testValidationWithCompletionNominal")
         
         let data = ["Phone":"+33623243101"]
         
         
-        func delay(delay:Double, closure:()->()){
-            dispatch_after(dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay*Double(NSEC_PER_SEC))
-                ), dispatch_get_main_queue(), closure)
+        func delay(_ delay:Double, closure:@escaping ()->()){
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay*Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
         }
         
         RegexAPI().validateDataWithCompletion(data, completionHandler: { (result,error) -> Void in
@@ -101,7 +98,7 @@ class regexTests: XCTestCase {
          })
         
         print("END OF TEST - Completion code is running")
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testValidationWithCompletionBadFormat(){
@@ -146,23 +143,20 @@ class regexTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }
     
     func testAllDataValidationWithCompletionNominal(){
         
-        let expectation = expectationWithDescription("testAllDataValidationWithCompletionNominal")
+        let expectation = self.expectation(description: "testAllDataValidationWithCompletionNominal")
         
         let data = ["Phone":"+33623243101","Address":"121 Rue Henri Barbusse 92110 CLICHY","Name":"Can","Surname":"Atac","Email":"can.atac@gmail.com"]
         
         
-        func delay(delay:Double, closure:()->()){
-            dispatch_after(dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay*Double(NSEC_PER_SEC))
-                ), dispatch_get_main_queue(), closure)
+        func delay(_ delay:Double, closure:@escaping ()->()){
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay*Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
         }
         
         RegexAPI().validateAllDataWithCompletion(data, completionHandler: { (result,error) -> Void in
@@ -187,21 +181,18 @@ class regexTests: XCTestCase {
         })
         
         print("END OF TEST - Completion code is running")
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
     func testAllDataValidationWithCompletionEmptyPhone(){
         
-        let expectation = expectationWithDescription("testAllDataValidationWithCompletionEmptyPhone")
+        let expectation = self.expectation(description: "testAllDataValidationWithCompletionEmptyPhone")
         
         let data = ["Phone":"","Address":"121 Rue Henri Barbusse 92110 CLICHY","Name":"Can","Surname":"Atac","Email":"can.atac@gmail.com"]
         
         
-        func delay(delay:Double, closure:()->()){
-            dispatch_after(dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay*Double(NSEC_PER_SEC))
-                ), dispatch_get_main_queue(), closure)
+        func delay(_ delay:Double, closure:@escaping ()->()){
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay*Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: closure)
         }
         
         RegexAPI().validateAllDataWithCompletion(data, completionHandler: { (result,error) -> Void in
@@ -229,7 +220,7 @@ class regexTests: XCTestCase {
         })
         
         print("END OF TEST - Completion code is running")
-        waitForExpectationsWithTimeout(5, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
     

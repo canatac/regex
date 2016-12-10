@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		874D62C71BD66CC900F6C944 /* regex.h in Headers */ = {isa = PBXBuildFile; fileRef = 874D62C61BD66CC900F6C944 /* regex.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		874D62CE1BD66CCA00F6C944 /* regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 874D62C31BD66CC900F6C944 /* regex.framework */; settings = {ASSET_TAGS = (); }; };
+		874D62CE1BD66CCA00F6C944 /* regex.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 874D62C31BD66CC900F6C944 /* regex.framework */; };
 		874D62D31BD66CCA00F6C944 /* regexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874D62D21BD66CCA00F6C944 /* regexTests.swift */; };
-		874D62DE1BD66DB100F6C944 /* RegexAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874D62DD1BD66DB100F6C944 /* RegexAPI.swift */; settings = {ASSET_TAGS = (); }; };
+		874D62DE1BD66DB100F6C944 /* RegexAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874D62DD1BD66DB100F6C944 /* RegexAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,9 +152,11 @@
 					874D62C21BD66CC900F6C944 = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = E449Q2SF5F;
+						LastSwiftMigration = 0810;
 					};
 					874D62CC1BD66CCA00F6C944 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0810;
 					};
 				};
 			};
@@ -331,6 +333,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -351,6 +354,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.canatac.regex;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -361,6 +365,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.canatac.regexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -371,6 +376,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.canatac.regexTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
