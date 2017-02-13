@@ -207,7 +207,6 @@ open class RegexAPI:CARegex {
             }catch{
                 print("completionHandler : OTHER ERROR")
                 try! completionHandler(false,CARegexCallError.unknownError)
-                //error = CARegexCallError.UnknownError
             }
     
     }
@@ -224,7 +223,6 @@ open class RegexAPI:CARegex {
         }catch{
             print("completionHandler : OTHER ERROR")
             try! completionHandler((false,[:]),CARegexCallError.unknownError)
-            //error = CARegexCallError.UnknownError
         }
         
     }
